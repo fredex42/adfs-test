@@ -15,7 +15,7 @@ scalaVersion := "2.13.2"
 
 libraryDependencies ++= Seq( jdbc , ehcache , ws , specs2 % Test , guice )
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
+unmanagedResourceDirectories in Test +=  (baseDirectory ( _ /"target/web/public/test" )).value
 
 libraryDependencies ++= Seq(
   "org.pac4j" %% "play-pac4j" % "10.0.0",
