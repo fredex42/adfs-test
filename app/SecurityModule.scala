@@ -1,5 +1,6 @@
 import com.google.inject.{AbstractModule, Provides}
 import controllers.{CustomAuthorizer, DemoHttpActionAdapter}
+import org.opensaml.saml.common.xml.SAMLConstants
 import org.pac4j.core.authorization.authorizer.RequireAnyRoleAuthorizer
 import org.pac4j.core.client.Clients
 import org.pac4j.core.client.direct.AnonymousClient
@@ -45,12 +46,20 @@ class SecurityModule(environment: Environment, config:Configuration) extends Abs
   def provideFormClient:FormClient = new FormClient("/loginform","uid","passwd",new SimpleTestUsernamePasswordAuthenticator)
 
   @Provides
-  def provideSaml2Client:SAML2Client = new SAML2Client(new SAML2Configuration(
-    config.get[String]("saml2.keystorePath"),
-    config.get[String]("saml2.keystorePassword"),
-    config.get[String]("saml2.privateKeyPassword"),
-    config.get[String]("saml2.identityProviderMetadataPath")
-  ))
+  def provideSaml2Client:SAML2Client = {
+    val samlConfig = new SAML2Configuration(
+      config.get[String]("saml2.keystorePath"),
+      config.get[String]("saml2.keystorePassword"),
+      config.get[String]("saml2.privateKeyPassword"),
+      config.get[String]("saml2.identityProviderMetadataPath")
+    )
+    //samlConfig.setServiceProviderEntityId("https://localhost:9000/callback")
+    //samlConfig.setUseNameQualifier(true)
+    //samlConfig.setAuthnRequestBindingType(SAMLConstants.SAML1_POST_BINDING_URI)
+    //samlConfig.setAllSignatureValidationDisabled(true)
+
+    new SAML2Client(samlConfig)
+  }
 
   @Provides
   def provideConfig(formClient: FormClient, indirectBasicAuthClient: IndirectBasicAuthClient,saml2Client: SAML2Client,

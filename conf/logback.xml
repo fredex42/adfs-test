@@ -35,9 +35,8 @@
 
   <logger name="org.pac4j" level="INFO"/>
   <logger name="org.pac4j.play.filters.SecurityFilter" level="DEBUG"/>
-  <logger name="org.pac4j.http.client.direct.DirectFormClient" level="DEBUG"/>
-  <logger name="org.pac4j.http.client.indirect.FormClient" level="DEBUG"/>
-
+  <logger name="org.pac4j.saml" level="DEBUG"/>
+  <logger name="org.pac4j.saml.transport" level="TRACE"/>
   <root level="WARN">
     <appender-ref ref="ASYNCFILE" />
     <appender-ref ref="ASYNCSTDOUT" />
