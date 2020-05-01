@@ -1,0 +1,18 @@
+@import views.html.helper.CSRF
+@import helper._
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Test basic auth login form</title>
+    </head>
+    <body>
+        <form method="GET" action="/callback"> {
+            <label for="uid">Username</label>
+            <input name="uid" id="uid" type="text">
+            <label for="passwd">Password</label>
+            <input name="passwd" id="passwd" type="password">
+            <button type="submit">Log in</button>
+        }
+    </body>
+</html>
