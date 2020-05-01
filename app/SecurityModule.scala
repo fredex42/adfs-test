@@ -56,7 +56,7 @@ class SecurityModule(environment: Environment, config:Configuration) extends Abs
   def provideConfig(formClient: FormClient, indirectBasicAuthClient: IndirectBasicAuthClient,saml2Client: SAML2Client,
                     parameterClient: ParameterClient, directBasicAuthClient: DirectBasicAuthClient): Config = {
 
-    val clients = new Clients(baseUrl + "/callback", formClient,  directBasicAuthClient, new AnonymousClient())
+    val clients = new Clients(baseUrl + "/callback", saml2Client, formClient,  directBasicAuthClient, new AnonymousClient())
 
     val config = new Config(clients)
     config.addAuthorizer("admin", new RequireAnyRoleAuthorizer[Nothing]("ROLE_ADMIN"))
