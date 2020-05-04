@@ -53,6 +53,8 @@ class SecurityModule(environment: Environment, config:Configuration) extends Abs
       config.get[String]("saml2.privateKeyPassword"),
       config.get[String]("saml2.identityProviderMetadataPath")
     )
+    samlConfig.setAcceptedSkew(8*3600)
+    //samlConfig.setPassive(true)
     //samlConfig.setServiceProviderEntityId("https://localhost:9000/callback")
     //samlConfig.setUseNameQualifier(true)
     //samlConfig.setAuthnRequestBindingType(SAMLConstants.SAML1_POST_BINDING_URI)

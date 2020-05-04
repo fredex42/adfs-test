@@ -18,6 +18,7 @@ libraryDependencies ++= Seq( jdbc , ehcache , ws , specs2 % Test , guice )
 
 unmanagedResourceDirectories in Test +=  (baseDirectory ( _ /"target/web/public/test" )).value
 
+//pac4j 4.0.0 release has a dodgy dependency on a SNAPSHOT release that seems to have disappeared. RC3 doesn't.
 libraryDependencies ++= Seq(
   "org.pac4j" %% "play-pac4j" % "10.0.0",
   "org.pac4j" % "pac4j-saml" % "4.0.0-RC3",
