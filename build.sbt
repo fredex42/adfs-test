@@ -18,9 +18,14 @@ libraryDependencies ++= Seq( jdbc , ehcache , ws , specs2 % Test , guice )
 
 unmanagedResourceDirectories in Test +=  (baseDirectory ( _ /"target/web/public/test" )).value
 
+val circeVersion = "0.13.0"
 //pac4j 4.0.0 release has a dodgy dependency on a SNAPSHOT release that seems to have disappeared. RC3 doesn't.
 libraryDependencies ++= Seq(
   "org.pac4j" %% "play-pac4j" % "10.0.0",
   "org.pac4j" % "pac4j-saml" % "4.0.0-RC3",
-  "org.pac4j" % "pac4j-http" % "4.0.0-RC3"
+  "org.pac4j" % "pac4j-http" % "4.0.0-RC3",
+  "com.dripower" %% "play-circe" % "2812.0",
+  "io.circe" %% "circe-core" % circeVersion,
+  "io.circe" %% "circe-parser" % circeVersion,
+  "io.circe" %% "circe-generic" % circeVersion,
 )
