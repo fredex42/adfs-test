@@ -1,18 +1,22 @@
 package controllers
 
+import java.time.Instant
+
 import javax.inject.{Inject, Singleton}
 import org.pac4j.core.profile.ProfileManager
 import org.pac4j.play.PlayWebContext
-import org.pac4j.play.store.PlaySessionStore
+import org.pac4j.saml.profile.SAML2Profile
+import play.api.Configuration
 import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request, Result}
 import io.circe.syntax._
 import io.circe.generic.auto._
-import org.pac4j.saml.profile.SAML2Profile
-import play.api.libs.circe.Circe
+import org.pac4j.play.store.PlaySessionStore
+
 import scala.jdk.CollectionConverters._
+import pdi.jwt.{JwtAlgorithm, JwtCirce, JwtClaim}
 
 @Singleton
-class ApiProfileController @Inject() (sessionStore: PlaySessionStore, cc:ControllerComponents) extends AbstractController(cc) with Circe {
+class JwtController @Inject() (config:Configuration,sessionStore:PlaySessionStore, cc:ControllerComponents) extends AbstractController(cc) {
   def withLoginProfile(request:Request[AnyContent])(block:SAML2Profile =>Result) = {
     val webContext = new PlayWebContext(request, sessionStore)
     val profileManager = new ProfileManager[SAML2Profile](webContext)
@@ -51,6 +55,22 @@ class ApiProfileController @Inject() (sessionStore: PlaySessionStore, cc:Control
       )
 
       Ok(returnMap.asJson)
+    }
+  }
+
+  def getJwt = Action { request=>
+    withLoginProfile(request) {profileContent =>
+      //default to 8 hours or what the config tells us
+      val jwtDuration = config.getOptional[Long]("jwt.validDuration").getOrElse(8*3600)
+      val claim = JwtClaim(
+        expiration=Some(Instant.now.plusSeconds(jwtDuration).getEpochSecond),
+        issuedAt = Some(Instant.now.getEpochSecond),
+        content = profileContent.getEmail,
+      )
+
+      val encodingKey = config.getOptional[String]("jwt.encodingSecret").getOrElse(config.get[String]("play.http.secret.key"))
+      val token = JwtCirce.encode(claim,encodingKey,JwtAlgorithm.HS256)
+      Ok(Map("status"->"ok","token"->token).asJson)
     }
   }
 }
