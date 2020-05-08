@@ -31,6 +31,9 @@ libraryDependencies ++= Seq(
   PlayImport.guice,
   // runtime DI
   PlayImport.cacheApi,
+  "com.pauldijou" %% "jwt-core" % "4.2.0",
+  "com.pauldijou" %% "jwt-play" % "4.2.0",
+  "com.pauldijou" %% "jwt-circe" % "4.2.0",
   "org.pac4j" %% "play-pac4j" % "10.0.0",
   "org.pac4j" % "pac4j-saml" % "4.0.0-RC3",
   "org.pac4j" % "pac4j-http" % "4.0.0-RC3",
