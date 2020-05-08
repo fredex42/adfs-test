@@ -1,7 +1,12 @@
+import com.typesafe.sbt.packager.docker.DockerPermissionStrategy
+import play.sbt.PlayImport
+
 name := "adfs_test"
  
-version := "1.0" 
-      
+version := "1.0"
+
+enablePlugins(DockerSpotifyClientPlugin)
+
 lazy val `adfs_test` = (project in file(".")).enablePlugins(PlayScala)
 
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
@@ -14,13 +19,18 @@ resolvers += "Shibboleth Repository" at "https://build.shibboleth.net/nexus/cont
 
 scalaVersion := "2.13.2"
 
-libraryDependencies ++= Seq( jdbc , ehcache , ws , specs2 % Test , guice )
+libraryDependencies ++= Seq( jdbc , ws , specs2 % Test , guice )
 
 unmanagedResourceDirectories in Test +=  (baseDirectory ( _ /"target/web/public/test" )).value
 
 val circeVersion = "0.13.0"
 //pac4j 4.0.0 release has a dodgy dependency on a SNAPSHOT release that seems to have disappeared. RC3 doesn't.
 libraryDependencies ++= Seq(
+  "com.github.karelcemus" %% "play-redis" % "2.6.0",
+  // runtime DI
+  PlayImport.guice,
+  // runtime DI
+  PlayImport.cacheApi,
   "org.pac4j" %% "play-pac4j" % "10.0.0",
   "org.pac4j" % "pac4j-saml" % "4.0.0-RC3",
   "org.pac4j" % "pac4j-http" % "4.0.0-RC3",
@@ -29,3 +39,10 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
 )
+
+packageName in Docker := "adfs_test_scala"
+version in Docker := "latest"
+dockerBaseImage := "openjdk:11.0.7-slim-buster"
+dockerExposedPorts := Seq(9000)
+dockerUsername := Some("andyg42")
+dockerPermissionStrategy := DockerPermissionStrategy.Run
