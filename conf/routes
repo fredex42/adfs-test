@@ -5,6 +5,8 @@
 
 # An example controller showing a sample home page
 GET     /                           controllers.HomeController.index
+#this is an authenticated page, if rendered it prints a message and closes itself
+GET     /extlogin                   controllers.HomeController.dummyLoginPage
 
 GET     /loginform                  @controllers.LoginFormController.loginForm
 POST    /dologinform                @controllers.LoginFormController.doLogin

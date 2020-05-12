@@ -20,4 +20,7 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.index("Your new application is ready."))
   }
 
+  def dummyLoginPage = Action {
+    Ok(views.html.dummyauth())
+  }
 }
