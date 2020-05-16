@@ -34,6 +34,7 @@ libraryDependencies ++= Seq(
   "org.pac4j" %% "play-pac4j" % "10.0.0",
   "org.pac4j" % "pac4j-saml" % "4.0.0-RC3",
   "org.pac4j" % "pac4j-http" % "4.0.0-RC3",
+  "org.pac4j" % "pac4j-oauth" % "4.0.0-RC3",
   "com.dripower" %% "play-circe" % "2812.0",
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,

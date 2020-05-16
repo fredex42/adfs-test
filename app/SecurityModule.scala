@@ -9,12 +9,14 @@ import org.pac4j.core.matching.matcher.PathMatcher
 import org.pac4j.http.client.direct.{DirectBasicAuthClient, ParameterClient}
 import org.pac4j.http.client.indirect.{FormClient, IndirectBasicAuthClient}
 import org.pac4j.http.credentials.authenticator.test.SimpleTestUsernamePasswordAuthenticator
+import org.pac4j.oauth.client.{GenericOAuth20Client, OAuth20Client}
 import org.pac4j.play.scala.{DefaultSecurityComponents, SecurityComponents}
 import org.pac4j.play.{CallbackController, LogoutController}
 import org.pac4j.play.store.{PlayCacheSessionStore, PlaySessionStore}
 import org.pac4j.saml.client.SAML2Client
 import org.pac4j.saml.config.SAML2Configuration
 import play.api.{Configuration, Environment}
+import scala.jdk.CollectionConverters._
 
 class SecurityModule(environment: Environment, config:Configuration) extends AbstractModule {
   lazy val baseUrl = config.get[String]("baseUrl")
@@ -64,10 +66,19 @@ class SecurityModule(environment: Environment, config:Configuration) extends Abs
   }
 
   @Provides
-  def provideConfig(formClient: FormClient, indirectBasicAuthClient: IndirectBasicAuthClient,saml2Client: SAML2Client,
-                    parameterClient: ParameterClient, directBasicAuthClient: DirectBasicAuthClient): Config = {
+  def provideOAuthClient:OAuth20Client = {
+    val client = new GenericOAuth20Client()
+    val profileAttrs:Map[String,String] = Map()
 
-    val clients = new Clients(baseUrl + "/callback", saml2Client, formClient,  directBasicAuthClient, new AnonymousClient())
+    client.setProfileAttrs(profileAttrs.asJava)
+
+    client
+  }
+
+  @Provides
+  def provideConfig(formClient: FormClient, oauthClient:OAuth20Client, indirectBasicAuthClient: IndirectBasicAuthClient, directBasicAuthClient: DirectBasicAuthClient): Config = {
+
+    val clients = new Clients(baseUrl + "/callback", oauthClient, formClient,  directBasicAuthClient, new AnonymousClient())
 
     val config = new Config(clients)
     config.addAuthorizer("admin", new RequireAnyRoleAuthorizer[Nothing]("ROLE_ADMIN"))
