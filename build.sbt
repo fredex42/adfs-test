@@ -32,12 +32,14 @@ libraryDependencies ++= Seq(
   // runtime DI
   PlayImport.cacheApi,
   "org.pac4j" %% "play-pac4j" % "10.0.0",
-  "org.pac4j" % "pac4j-saml" % "4.0.0-RC3",
   "org.pac4j" % "pac4j-http" % "4.0.0-RC3",
+  "org.pac4j" % "pac4j-jwt" % "4.0.0-RC3",
   "com.dripower" %% "play-circe" % "2812.0",
   "io.circe" %% "circe-core" % circeVersion,
   "io.circe" %% "circe-parser" % circeVersion,
   "io.circe" %% "circe-generic" % circeVersion,
+  "org.bouncycastle" % "bcprov-jdk15on" % "1.61",
+  "org.bouncycastle" % "bcpkix-jdk15on" % "1.61"
 )
 
 packageName in Docker := "adfs_test_scala"
