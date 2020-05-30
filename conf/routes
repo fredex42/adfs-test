@@ -12,6 +12,7 @@ GET     /loginform                  @controllers.LoginFormController.loginForm
 POST    /dologinform                @controllers.LoginFormController.doLogin
 
 GET     /api/profile                @controllers.ApiProfileController.myProfile
+OPTIONS /api/profile                @controllers.GenericOptionsHandler.options
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
