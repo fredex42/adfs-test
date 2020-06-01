@@ -10,8 +10,6 @@ GET     /extlogin                   controllers.HomeController.dummyLoginPage
 
 GET     /loginform                  @controllers.LoginFormController.loginForm
 POST    /dologinform                @controllers.LoginFormController.doLogin
-POST     /callback                   @org.pac4j.play.CallbackController.callback(request:Request)
-GET     /logout                     @org.pac4j.play.LogoutController.logout(request:Request)
 
 GET     /api/profile                @controllers.ApiProfileController.myProfile
 
